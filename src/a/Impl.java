@@ -17,54 +17,66 @@ class BaseC{
 
 public class Impl{
 
-	static final Scanner s = new Scanner(System.in);
-    public static void main(String args[] ) throws Exception {
-        int n = s.nextInt();
-        long r = s.nextLong();
-        List<Long> arr = new LinkedList<>();
-        while(n-- >0) {
-        	arr.add(s.nextLong());
-        }
-        
-        System.out.println(countTriplets(arr, r));
+	  static final Scanner s = new Scanner(System.in);
+	    public static void main(String args[] ) throws Exception {
+	        /* Sample code to perform I/O:
+	         * Use either of these methods for input
 
-    }
+	        //BufferedReader
+	        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	        String name = br.readLine();                // Reading input from STDIN
+	        System.out.println("Hi, " + name + ".");    // Writing output to STDOUT
 
-    static long countTriplets(List<Long> arr, long r) {
-        long count=0;
-        int n = arr.size();
-        long a,b,c;
-        Map<Long,Long> rightmap = new HashMap<>();
-        Map<Long,Long> leftmap = new HashMap<>();
-        for(int i=0; i<n; i++){
-            if(rightmap.containsKey(arr.get(i))){
-                rightmap.put(arr.get(i), rightmap.get(arr.get(i))+1);
-            }else{
-                rightmap.put(arr.get(i),(long)1);
-            } 
-        }
-        for(long no: arr){
-            long countLeft = 0;
-            long countRight = 0;
-            long occur = rightmap.get(no); 
-            long lhs = (no%r==0)?no/r:0;
-            rightmap.put(no,occur - 1L);
-            
-            if(rightmap.containsKey(no*r)){
-                countRight = rightmap.get(no*r);
-            }
-            if(leftmap.containsKey(lhs)){
-                countLeft = leftmap.get(lhs);
-            }
-            count+=countRight*countLeft;
-            if(leftmap.containsKey(no)){
-                leftmap.put(no, leftmap.get(no)+1);
-            }else{
-                leftmap.put(no,(long)1);
-            } 
-        }
-        
-        return count;
-    }
+	        //Scanner
+	        Scanner s = new Scanner(System.in);
+	        String name = s.nextLine();                 // Reading input from STDIN
+	        System.out.println("Hi, " + name + ".");    // Writing output to STDOUT
+
+	        */
+
+	        // Write your code here
+
+	        int t = s.nextInt();
+	        int n;
+	        int count;
+	        int[] d = new int[10];
+	        d[0]=0;
+	        d[1]=1;
+	        for(int i=10, j=2; i<1000000000; i*=10){
+	            d[j] = i+(d[j-1]*9);
+	            j++;
+	        }
+	        while(t-- >0){
+	            n = s.nextInt();
+	            int no = n;
+	            count = 0;
+	            int mul=10;
+	            int m = 1;
+	            while(no>0){
+	            	
+	                count+=getdiff((no%10),mul,m, d);
+//	                System.out.println((no%10)*mul+" "+d);
+	                mul*=10;
+	                no/=10;
+	                m++;
+	            }
+	            System.out.println(n-count);
+	        }
+	        
+
+	    }
+
+	    static int getdiff(int n,int mul, int m,int[] d ){
+	        int count = 0;
+	        
+	        if(n>3){
+	            count+=(mul/10)+d[m-1]*(n-1);
+	        }else {
+	        	count+=d[m-1]*n;
+	        }
+	        
+	        return count;
+
+	    }
 }
 
